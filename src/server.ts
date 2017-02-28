@@ -1,3 +1,4 @@
+import { RedisStoreFactory } from './app/stores/redis.store.factory';
 import { BaseStoreFactory } from "./app/stores/base/base.store.factory";
 import { MongoDbStoreFactory } from "./app/stores/mongodb.store.factory";
 import { AuthRoute } from "./app/routes/auth.route";
@@ -54,7 +55,8 @@ Promise.resolve()
         app = new ExpressApplication();
         logger = new Logger();
 
-        storeFactory = new MongoDbStoreFactory(db);
+        // storeFactory = new MongoDbStoreFactory(db);
+        storeFactory = new RedisStoreFactory();
     })
 
     // add view engine

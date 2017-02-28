@@ -57,7 +57,6 @@ export class PassportAuthProvider implements BaseAuthProvider {
         passport.deserializeUser((id: string, done) => {
             this.data.getById(id)
                 .then(user => {
-                    console.log(user);
                     done(null, user);
                 })
                 .catch(err => done(err));
