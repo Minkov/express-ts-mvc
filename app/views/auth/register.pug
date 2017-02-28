@@ -1,0 +1,12 @@
+extend ../_layout
+
+block content
+    form(action="/auth/register" method="POST")
+        label
+            | Username:
+            input(name="username")
+        label
+            | Password:
+            input(name="password")
+        button.btn
+            | Register
