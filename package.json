@@ -7,6 +7,9 @@
         "start": "node ./build/server.js",
         "postinstall": "./node_modules/.bin/gulp build"
     },
+    "engines": {
+        "node": "7.6.0"
+    },
     "author": "",
     "license": "ISC",
     "dependencies": {
@@ -20,7 +23,10 @@
         "morgan": "^1.8.1",
         "passport": "^0.3.2",
         "passport-local": "^1.0.0",
-        "pug": "^2.0.0-beta11"
+        "pug": "^2.0.0-beta11",
+        "gulp": "^3.9.1",
+        "gulp-typescript": "^3.1.5",
+        "typescript": "^2.2.1"
     },
     "devDependencies": {
         "@types/connect-mongo": "0.0.32",
@@ -32,9 +38,6 @@
         "@types/node": "^7.0.5",
         "@types/passport": "^0.3.3",
         "@types/passport-local": "^1.0.29",
-        "@types/pug": "^2.0.4",
-        "gulp": "^3.9.1",
-        "gulp-typescript": "^3.1.5",
-        "typescript": "^2.2.1"
+        "@types/pug": "^2.0.4"
     }
 }
