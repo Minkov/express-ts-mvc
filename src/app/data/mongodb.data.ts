@@ -15,6 +15,7 @@ export class MongoDbData<T> implements BaseData<T> {
         this.collection = this.db.collection(collectionName);
         this.modelFuncs = modelFuncs;
     }
+
     getAll(): Promise<T[]> {
         return this.collection.find()
             .toArray()
@@ -27,6 +28,7 @@ export class MongoDbData<T> implements BaseData<T> {
                 if (model == null) {
                     return model;
                 }
+
                 return this.modelFuncs.fromModel(model);
             });
     }

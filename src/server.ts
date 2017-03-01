@@ -8,7 +8,7 @@ import { PassportAuthProvider } from "./app/auth/passport.auth.provider";
 import * as path from "path";
 import * as bodyParser from "body-parser";
 
-import { connectionString, port, secret } from "./app/config";
+import { connectionString, port, secret, redisConnectionString } from "./app/config";
 
 import { Application } from "./app/base/application";
 import { AuthorsRoute } from "./app/routes/authors.route";
@@ -56,7 +56,7 @@ Promise.resolve()
         logger = new Logger();
 
         // storeFactory = new MongoDbStoreFactory(db);
-        storeFactory = new RedisStoreFactory();
+        storeFactory = new RedisStoreFactory(redisConnectionString);
     })
 
     // add view engine
@@ -66,11 +66,18 @@ Promise.resolve()
     })
 
     // add middlewares
-
     .then(() => {
-        // app.useMiddleware(bodyParser.json());
-        // app.useMiddleware(bodyParser.urlencoded({ extended: true }));
+        app.useMiddleware(bodyParser.json());
+        app.useMiddleware(bodyParser.urlencoded({ extended: true }));
         app.useMiddleware(logger.getLoggerMiddleware());
+    })
+
+    // add static files
+    .then(() => {
+        const staticDir = path.join(__dirname, "../build", "app", "public");
+        app.addStaticResource("/static", staticDir);
+        const libsDir = path.join(__dirname, "../node_modules");
+        app.addStaticResource("/libs", libsDir);
     })
 
     // add auth

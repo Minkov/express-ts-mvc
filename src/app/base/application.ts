@@ -7,4 +7,5 @@ export interface Application {
 
     set(key: string, value: any);
     useMiddleware(middleware: any);
+    addStaticResource(url: string, pathInFs: string);
 }

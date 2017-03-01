@@ -1,35 +1,17 @@
+include _mixins/_nav
 <!DOCTYPE html>
 html(lang="en")
 head
     meta(charset="UTF-8")
     title My Books Application
+    link(rel="stylesheet", href="/libs/bootstrap/dist/css/bootstrap.css")
+    link(rel="stylesheet", href="/static/css/main.css")
 body
     #root
         .header
-            h1 My app
-            .nav
-                ul
-                    li
-                        a(href="/") 
-                            | Home
-                    li
-                        a(href="/books/add")
-                            | Add Book
-                    if user
-                        li
-                            a(href="/profile")
-                                =user.username
-                        li
-                            form(action="/auth/logout" method="POST")
-                                button
-                                    | Logout
-                    else 
-                        li
-                            a(href="/auth/register")
-                                | Register
-                        li
-                            a(href="/auth/login")
-                                | Login
+            h1 The Books App
+            +nav()
+           
         .content
             block content
         

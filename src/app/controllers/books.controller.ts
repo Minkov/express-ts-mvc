@@ -11,7 +11,7 @@ export class BooksController implements BaseController<Book> {
         this.data = data;
     }
 
-    getAll(req: Request, res: Response) {
+    getAll(req, res) {
         this.data.getAll()
             .then((books: Book[]) => {
                 const model = {
@@ -23,15 +23,15 @@ export class BooksController implements BaseController<Book> {
             });
     }
 
-    getForm(req: Request, res: Response) {
+    getForm(req, res) {
         return res.render("books/book-add");
     }
 
     getById(req, res) {
-
+        return res.render("books/book-details");
     }
 
-    add(req: Request, res: Response) {
+    add(req, res) {
         let body = req.body;
         this.data.add(body)
             .then(book => {

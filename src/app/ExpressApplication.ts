@@ -33,4 +33,12 @@ export class ExpressApplication implements Application {
     public useMiddleware(middleware: any) {
         this.app.use(middleware);
     }
+
+    public addStaticResource(url: string, pathInFs: string) {
+        this.app.use(url, express.static(pathInFs));
+    }
+
+    getApp(): express.Application {
+        return this.app;
+    }
 }

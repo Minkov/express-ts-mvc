@@ -7,9 +7,14 @@ import * as connectRedis from "connect-redis";
 let RedisStore = connectRedis(session);
 
 export class RedisStoreFactory implements BaseStoreFactory {
+    connectionString: string;
+    constructor(connectionString: string) {
+        this.connectionString = connectionString;
+    }
+
     public getStore(): Store {
         return new RedisStore({
-            url: "//redis-15543.c8.us-east-1-3.ec2.cloud.redislabs.com:15543"
+            url: this.connectionString
         });
     }
 }
