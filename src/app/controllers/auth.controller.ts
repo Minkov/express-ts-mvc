@@ -1,3 +1,4 @@
+import { BaseValidator } from "./../validators/base/base.validator";
 import { Encryptor } from "./../utils/encryptor";
 import { BaseData } from "./../data/base/base.data";
 import { User } from "./../models/user.model";
@@ -6,11 +7,11 @@ import { BaseAuthController } from "./base/base.auth.controller";
 
 export class AuthController implements BaseAuthController {
     data: BaseData<User>;
-    encryptor: Encryptor;
+    validator: BaseValidator;
 
-    constructor(data: BaseData<User>, encryptor: Encryptor) {
+    constructor(data: BaseData<User>, validator: BaseValidator) {
         this.data = data;
-        this.encryptor = encryptor;
+        this.validator = validator;
     }
 
     public getLoginForm(req, res) {
@@ -33,10 +34,17 @@ export class AuthController implements BaseAuthController {
 
     public registerUser(req, res) {
         const encryptor = new Encryptor();
+        const username = req.body.username;
         const password = req.body.password;
-        let user = new User("", req.body.username, password);
-        this.data
-            .findOne({ username: user.username }, false)
+
+        let user = new User("", username, password);
+        return Promise.resolve(user)
+            .then((user) => {
+                if (!this.validator.isValid(user.username)) {
+                    throw new Error("ShortUsername");
+                }
+                return this.data.findOne({ username: user.username }, false)
+            })
             .then((dbUser: User) => {
                 if (dbUser) {
                     throw new Error("UserExists");
