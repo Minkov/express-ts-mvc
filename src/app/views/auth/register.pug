@@ -1,6 +1,9 @@
 extend ../_layout
 
 block content
+    if error
+        if error=="UserExists"
+            span The username is taken
     form(action="/auth/register" method="POST")
         label
             | Username:

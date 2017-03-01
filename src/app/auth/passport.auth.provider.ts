@@ -1,4 +1,4 @@
-import { BaseStoreFactory } from './../stores/base/base.store.factory';
+import { BaseStoreFactory } from "./../stores/base/base.store.factory";
 import { Application } from "./../base/application";
 import { User } from "./../models/user.model";
 import { BaseData } from "../data/base/base.data";

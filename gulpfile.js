@@ -12,6 +12,9 @@ const nodemon = require("gulp-nodemon");
 // Testing
 const mocha = require('gulp-mocha');
 
+// Linting
+const tslint = require("gulp-tslint");
+
 gulp.task("compile:typescript", () => {
     gulp.src("./src/**/*.ts")
         .pipe(ts(tsConfig))
@@ -56,3 +59,11 @@ gulp.task("test", ["build"], () =>
     gulp.src("./test/**/*.js", { read: false })
     .pipe(mocha({ reporter: "nyan" }))
 );
+
+gulp.task("lint", () => {
+    gulp.src("./src/**/*.ts")
+        .pipe(tslint({
+            formatter: "verbose"
+        }))
+        .pipe(tslint.report())
+});

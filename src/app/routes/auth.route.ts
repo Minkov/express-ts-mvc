@@ -1,4 +1,4 @@
-import { Encryptor } from './../utils/encryptor';
+import { BaseAuthController } from "./../controllers/base/base.auth.controller";
 import * as passport from "passport";
 import { Router } from "express";
 import { User } from "./../models/user.model";
@@ -6,42 +6,30 @@ import { BaseData } from "./../data/base/base.data";
 import { BaseRoute } from "./base/base.route";
 
 export class AuthRoute implements BaseRoute {
+    controller: BaseAuthController;
     router: Router;
-    data: BaseData<User>;
-    constructor(data: BaseData<User>) {
-        this.data = data;
+    constructor(controller: BaseAuthController) {
+        this.controller = controller;
         this.router = Router();
-        this.init();
+        this.initRoutes();
     }
 
-    init() {
+    initRoutes() {
         this.router
             .get("/auth/login", (req, res) => {
-                return res.render("auth/login");
+                return this.controller.getLoginForm(req, res);
             })
             .get("/auth/register", (req, res) => {
-                return res.render("auth/register");
+                this.controller.getRegisterForm(req, res);
             })
-
-            .post("/auth/login", passport.authenticate("local"),
-            (req, res) => {
-                if (req.isAuthenticated()) {
-                    res.redirect("/");
-                } else {
-                    res.redirect("/login");
-                }
+            .post("/auth/login", passport.authenticate("local"), (req, res) => {
+                return this.controller.loginUser(req, res);
             })
             .post("/auth/register", (req, res) => {
-                const encryptor = new Encryptor();
-                // const password = encryptor.encrypt(req.body.password);
-                const password = req.body.password;
-                let user = new User("", req.body.username, password);
-                this.data.add(user);
-                return res.send(true);
+                return this.controller.registerUser(req, res);
             })
             .post("/auth/logout", (req, res) => {
-                req.logOut();
-                res.redirect("/");
+                return this.controller.logoutUser(req, res);
             });
     }
 

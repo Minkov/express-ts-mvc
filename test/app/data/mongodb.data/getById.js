@@ -1,7 +1,5 @@
 const expect = require("chai").expect;
 
-const expect = require("chai").expect;
-
 let sinon = require("sinon");
 
 let { MongoDbData } = require("../../../../build/app/data/mongodb.data");

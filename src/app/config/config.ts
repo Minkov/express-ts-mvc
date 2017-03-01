@@ -4,7 +4,7 @@ const connectionString: string =
 
 const redisConnectionString: string =
     process.env.REDIS_CONNECTION_STRING ||
-    "//127.0.0.1:6379"
+    "//127.0.0.1:6379";
 
 const port: number = process.env.PORT || 3001;
 const secret: string = "purple unicorn";

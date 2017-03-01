@@ -1,5 +1,7 @@
-import { Encryptor } from './app/utils/encryptor';
-import { RedisStoreFactory } from './app/stores/redis.store.factory';
+import { BaseAuthController } from "./app/controllers/base/base.auth.controller";
+import { AuthController } from "./app/controllers/auth.controller";
+import { Encryptor } from "./app/utils/encryptor";
+import { RedisStoreFactory } from "./app/stores/redis.store.factory";
 import { BaseStoreFactory } from "./app/stores/base/base.store.factory";
 import { MongoDbStoreFactory } from "./app/stores/mongodb.store.factory";
 import { AuthRoute } from "./app/routes/auth.route";
@@ -42,6 +44,7 @@ let authProvider: BaseAuthProvider;
 
 let booksController: BaseController<Book>;
 let authorsController: BaseController<Author>;
+let authController: BaseAuthController;
 
 let encryptor = new Encryptor();
 
@@ -55,12 +58,12 @@ Promise.resolve()
         booksData = new MongoDbData<Book>(db, Book, Book);
         authorsData = new MongoDbData<Author>(db, Author, Author);
         usersData = new MongoDbData<User>(db, User, User);
+
         app = new ExpressApplication();
         logger = new Logger();
 
-        storeFactory = new MongoDbStoreFactory(db);
-
-        // storeFactory = new RedisStoreFactory(redisConnectionString);
+        // storeFactory = new MongoDbStoreFactory(db);
+        storeFactory = new RedisStoreFactory(redisConnectionString);
     })
 
     // add view engine
@@ -101,6 +104,7 @@ Promise.resolve()
     .then(() => {
         booksController = new BooksController(booksData);
         authorsController = new AuthorsController(authorsData);
+        authController = new AuthController(usersData, encryptor);
     })
 
     // add routes
@@ -111,7 +115,7 @@ Promise.resolve()
         let authorsRoute = new AuthorsRoute(authorsController);
         app.addRoute(authorsRoute);
 
-        let authRoute = new AuthRoute(usersData);
+        let authRoute = new AuthRoute(authController);
         app.addRoute(authRoute);
     })
 

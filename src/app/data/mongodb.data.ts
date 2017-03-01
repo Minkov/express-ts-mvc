@@ -23,15 +23,24 @@ export class MongoDbData<T> implements BaseData<T> {
                 if (!models) {
                     return [];
                 }
-                
-                return models.map(model => this.modelFuncs.fromModel(model))
+
+                return models.map(model => this.modelFuncs.fromModel(model));
             });
     }
 
-    findOne(query?: any): Promise<T> {
+    findOne(query?: any, isCaseSensitive = true): Promise<T> {
+        if (!isCaseSensitive) {
+            query = Object.keys(query)
+                .reduce((q, key) => {
+                    q[key] = new RegExp(query[key].toLowerCase(), "i");
+                    return q;
+                }, {});
+        }
+
         return this.collection.findOne(query)
             .then(model => {
-                if (model == null) {
+                if (!model) {
+                    console.log(model);
                     return model;
                 }
 
