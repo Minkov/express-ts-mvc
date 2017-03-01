@@ -72,7 +72,7 @@ Promise.resolve()
     // add middlewares
     .then(() => {
         app.useMiddleware((req, res, next) => {
-            if (req.body.password) {
+            if (req.body && req.body.password) {
                 req.body.password = encryptor.encrypt(req.body.password);
             }
             next();
