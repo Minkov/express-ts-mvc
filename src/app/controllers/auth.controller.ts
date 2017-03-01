@@ -43,7 +43,7 @@ export class AuthController implements BaseAuthController {
                 if (!this.validator.isValid(user.username)) {
                     throw new Error("ShortUsername");
                 }
-                return this.data.findOne({ username: user.username }, false)
+                return this.data.findOne({ username: user.username }, false);
             })
             .then((dbUser: User) => {
                 if (dbUser) {

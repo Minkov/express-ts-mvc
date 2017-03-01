@@ -61,7 +61,7 @@ let validators = {
         console.log(this.validators[key]);
         return this.validators[key];
     }
-}
+};
 
 Promise.resolve()
     .then(() => {
