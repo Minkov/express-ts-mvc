@@ -23,8 +23,13 @@ export class AuthRoute implements BaseRoute {
                 return res.render("auth/register");
             })
 
-            .post("/auth/login", passport.authenticate("local", { failureRedirect: "/auth/login" }), (req, res) => {
-                res.redirect("/");
+            .post("/auth/login", passport.authenticate("local"),
+            (req, res) => {
+                if (req.isAuthenticated()) {
+                    res.redirect("/");
+                } else {
+                    res.redirect("/login");
+                }
             })
             .post("/auth/register", (req, res) => {
                 const encryptor = new Encryptor();
