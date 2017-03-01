@@ -1,3 +1,4 @@
+import { Encryptor } from './app/utils/encryptor';
 import { RedisStoreFactory } from './app/stores/redis.store.factory';
 import { BaseStoreFactory } from "./app/stores/base/base.store.factory";
 import { MongoDbStoreFactory } from "./app/stores/mongodb.store.factory";
@@ -42,6 +43,8 @@ let authProvider: BaseAuthProvider;
 let booksController: BaseController<Book>;
 let authorsController: BaseController<Author>;
 
+let encryptor = new Encryptor();
+
 Promise.resolve()
     .then(() => {
         return DbConfig.initMongoDb(connectionString);
@@ -56,7 +59,7 @@ Promise.resolve()
         logger = new Logger();
 
         storeFactory = new MongoDbStoreFactory(db);
-        
+
         // storeFactory = new RedisStoreFactory(redisConnectionString);
     })
 
@@ -68,6 +71,12 @@ Promise.resolve()
 
     // add middlewares
     .then(() => {
+        app.useMiddleware((req, res, next) => {
+            if (req.body.password) {
+                req.body.password = encryptor.encrypt(req.body.password);
+            }
+            next();
+        });
         app.useMiddleware(bodyParser.json());
         app.useMiddleware(bodyParser.urlencoded({ extended: true }));
         app.useMiddleware(logger.getLoggerMiddleware());
