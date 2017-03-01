@@ -1,14 +1,15 @@
+import { BaseDb } from "./../db/base.db";
 import { ModelFuncs } from "./utils/model.funcs";
 import { Collection, Db, ObjectID } from "mongodb";
 
 import { BaseData } from "./base/base.data";
 
 export class MongoDbData<T> implements BaseData<T> {
-    db: Db;
+    db: BaseDb;
     collection: Collection;
     modelFuncs: ModelFuncs<T>;
 
-    constructor(db: Db, Klass: Function, modelFuncs: ModelFuncs<T>) {
+    constructor(db: BaseDb, Klass: Function, modelFuncs: ModelFuncs<T>) {
         this.db = db;
         const collectionName = this.getCollectionName(Klass);
         this.collection = this.db.collection(collectionName);
