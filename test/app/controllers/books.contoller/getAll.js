@@ -12,7 +12,7 @@ describe("BooksController tests", () => {
     let req = {};
 
     let res = {
-        model: {},
+        model: null,
         viewName: "",
         render(viewName, model) {
             this.model = model;
@@ -22,6 +22,8 @@ describe("BooksController tests", () => {
     };
 
     beforeEach(() => {
+        res.model = null;
+        res.viewName = "";
         data = {
             getAll() {}
         };

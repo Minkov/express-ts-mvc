@@ -1,14 +1,16 @@
 const gulp = require("gulp");
 
+// Compilers
 const stylus = require("gulp-stylus");
 const ts = require("gulp-typescript");
 const babel = require('gulp-babel');
+const tsConfig = require("./tsconfig.json");
 
+// Runners
 const nodemon = require("gulp-nodemon");
 
+// Testing
 const mocha = require('gulp-mocha');
-
-const tsConfig = require("./tsconfig.json");
 
 gulp.task("compile:typescript", () => {
     gulp.src("./src/**/*.ts")
@@ -17,9 +19,9 @@ gulp.task("compile:typescript", () => {
 });
 
 gulp.task("compile:stylus", () => {
-    gulp.src("./src/**/*.styl") // -> Doncho
-        .pipe(stylus()) // -> Pesho
-        .pipe(gulp.dest("./build")); // -> Gosho
+    gulp.src("./src/**/*.styl")
+        .pipe(stylus())
+        .pipe(gulp.dest("./build"));
 });
 
 gulp.task("compile:javascript", () => {
@@ -49,7 +51,6 @@ gulp.task("serve", ["build"], () => {
         tasks: ["build"]
     });
 });
-
 
 gulp.task("test", ["build"], () =>
     gulp.src("./test/**/*.js", { read: false })

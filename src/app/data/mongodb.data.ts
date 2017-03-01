@@ -23,6 +23,7 @@ export class MongoDbData<T> implements BaseData<T> {
                 if (!models) {
                     return [];
                 }
+                
                 return models.map(model => this.modelFuncs.fromModel(model))
             });
     }

@@ -24,16 +24,25 @@ export class BooksController implements BaseController<Book> {
     }
 
     getForm(req, res) {
-    return res.render("books/book-add");
+        return res.render("books/book-add");
     }
 
     getById(req, res) {
-        return res.render("books/book-details");
+        let id = req.params.id;
+        return this.data.getById(id)
+            .then((book: Book) => {
+                let model = {
+                    model: book,
+                    user: req.user
+                };
+
+                return res.render("books/book-details", model);
+            });
     }
 
     add(req, res) {
         let body = req.body;
-        this.data.add(body)
+        return this.data.add(body)
             .then(book => {
                 res.redirect("/");
             });

@@ -9,13 +9,11 @@ describe("getAll()", () => {
     let items = [];
 
     class Test {
-        static toModel(obj) {
-            return obj;
-        }
 
-        static fromModel(model) {
-            return model;
-        }
+    }
+    let modelFuncs = {
+        toModel: (obj) => obj,
+        fromModel: (model) => model
     }
 
     beforeEach(() => {
@@ -35,7 +33,7 @@ describe("getAll()", () => {
             }
         });
 
-        data = new MongoDbData(db, Test, Test);
+        data = new MongoDbData(db, Test, modelFuncs);
     });
 
     describe("Invalid tests", () => {
@@ -50,19 +48,20 @@ describe("getAll()", () => {
     });
 
     describe("Correct tests", () => {
-
-        it("should return empty array, when there are no items", (done) => {
-            items = [];
-            data.getAll()
-                .then(resultItems => {
-                    expect(resultItems).to.eql(items);
-                    done();
-                });
+        describe("where there are no items", () => {
+            it("should return empty array", (done) => {
+                items = [];
+                data.getAll()
+                    .then(resultItems => {
+                        expect(resultItems).to.eql(items);
+                        done();
+                    });
+            });
         });
 
 
-        describe("should return array", () => {
-            it("Of one item, when there is one item", (done) => {
+        describe("when there are items", () => {
+            it("should return array with one item", (done) => {
                 items = [new Test()];
                 data.getAll()
                     .then(resultItems => {
@@ -73,7 +72,7 @@ describe("getAll()", () => {
             });
 
 
-            it("Of many items, when there are many items", (done) => {
+            it("should return array with one item", (done) => {
                 items = [new Test(), new Test(), new Test()];
                 data.getAll()
                     .then(resultItems => {
