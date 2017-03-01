@@ -33,7 +33,8 @@ export class AuthRoute implements BaseRoute {
             })
             .post("/auth/register", (req, res) => {
                 const encryptor = new Encryptor();
-                const password = encryptor.encrypt(req.body.password);
+                // const password = encryptor.encrypt(req.body.password);
+                const password = req.body.password;
                 let user = new User("", req.body.username, password);
                 this.data.add(user);
                 return res.send(true);
