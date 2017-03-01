@@ -19,7 +19,12 @@ export class MongoDbData<T> implements BaseData<T> {
     getAll(): Promise<T[]> {
         return this.collection.find()
             .toArray()
-            .then(models => models.map(model => this.modelFuncs.fromModel(model)));
+            .then(models => {
+                if (!models) {
+                    return [];
+                }
+                return models.map(model => this.modelFuncs.fromModel(model))
+            });
     }
 
     findOne(query?: any): Promise<T> {

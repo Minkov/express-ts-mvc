@@ -2,15 +2,18 @@ extends ../_layout
 
 block content
     form(action="/books" method="POST")
-        label
-            | Title:
-            input(name="title")
-        label
-            | Description:
-            input(name="description")
-        label
-            | imgUrl:
-            input(name="imgUrl")
+        .form-group
+            label
+                | Title:
+                input(name="title")
+        .form-group
+            label
+                | Description:
+                textarea(name="description")
+        .form-group
+            label
+                | imgUrl:
+                input(name="imgUrl")
         button
             | SaveÏ
         

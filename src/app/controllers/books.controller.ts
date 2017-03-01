@@ -12,7 +12,7 @@ export class BooksController implements BaseController<Book> {
     }
 
     getAll(req, res) {
-        this.data.getAll()
+        return this.data.getAll()
             .then((books: Book[]) => {
                 const model = {
                     model: books,
@@ -24,7 +24,7 @@ export class BooksController implements BaseController<Book> {
     }
 
     getForm(req, res) {
-        return res.render("books/book-add");
+    return res.render("books/book-add");
     }
 
     getById(req, res) {

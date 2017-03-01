@@ -6,6 +6,8 @@ const babel = require('gulp-babel');
 
 const nodemon = require("gulp-nodemon");
 
+const mocha = require('gulp-mocha');
+
 const tsConfig = require("./tsconfig.json");
 
 gulp.task("compile:typescript", () => {
@@ -42,7 +44,14 @@ gulp.task("build", ["compile", "copy"]);
 gulp.task("serve", ["build"], () => {
     nodemon({
         script: './build/server.js',
-        ext: 'ts js styl',
-        ignore: "./build"
+        ext: 'ts js styl pug',
+        ignore: "./build",
+        tasks: ["build"]
     });
 });
+
+
+gulp.task("test", ["build"], () =>
+    gulp.src("./test/**/*.js", { read: false })
+    .pipe(mocha({ reporter: "nyan" }))
+);

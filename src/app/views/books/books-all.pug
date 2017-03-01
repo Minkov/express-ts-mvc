@@ -3,6 +3,11 @@ extends ../_layout
 block content
     ul.list
         each book in model
-            li
+            li.book-item
                 a(href="/books/" + book.id)
-                    =book.title
+                    if book.imgUrl
+                        img(src=book.imgUrl)
+                    else
+                        img(src="http://librosebooks.org/img/xggS7:XXBBB.vVq0xE.W8C.ClXCi0EVXWVgVu8vXS180jWgXWVWxiXtXECVviXc9nl9nnXF0aP3iVkcc9290n30Mi9ak302PtcMiF9XEXCXECVvi_ttM9_t_M2M2t.fSv.png")
+                    span=book.title
+                
