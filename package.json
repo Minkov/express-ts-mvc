@@ -13,6 +13,7 @@
     "author": "Doncho Minkov",
     "license": "MIT",
     "dependencies": {
+        "babel-preset-es2015": "^6.22.0",      
         "bluebird": "^3.4.7",
         "body-parser": "^1.16.1",
         "bootstrap": "^3.3.7",
@@ -48,7 +49,6 @@
         "@types/passport": "^0.3.3",
         "@types/passport-local": "^1.0.29",
         "@types/pug": "^2.0.4",
-        "babel-preset-es2015": "^6.22.0",
         "chai": "^3.5.0",
         "ts-node": "^2.1.0"
     }
