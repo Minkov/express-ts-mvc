@@ -56,6 +56,7 @@ Promise.resolve()
         logger = new Logger();
 
         storeFactory = new MongoDbStoreFactory(db);
+        
         // storeFactory = new RedisStoreFactory(redisConnectionString);
     })
 
