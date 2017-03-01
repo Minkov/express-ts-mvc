@@ -7,6 +7,7 @@ const babel = require('gulp-babel');
 const tsConfig = require("./tsconfig.json");
 
 // Runners
+const shell = require("gulp-shell");
 const nodemon = require("gulp-nodemon");
 
 // Testing
