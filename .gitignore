@@ -1,8 +1,10 @@
 # Node_modules
-
 node_modules
-
-build
-
 typings
 typings.json
+
+# MacOS 
+.DS_Store
+
+# Project specifics
+build
