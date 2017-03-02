@@ -2,7 +2,7 @@ const expect = require("chai").expect;
 
 let sinon = require("sinon");
 
-let { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH } = require("../../../../build/app/config");
+let { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_VALID_CHARS } = require("../../../../build/app/config");
 
 let { StringValidator } = require("../../../../build/app/validators/string.validator");
 
@@ -35,14 +35,10 @@ describe("AuthController#registerUser", () => {
 
     let controller;
 
-    let validator = new StringValidator(USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH);
+    let validator = new StringValidator(USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_VALID_CHARS);
 
     beforeEach(() => {
         controller = new AuthController(data, validator, encryptor);
-    });
-
-    afterEach(() => {
-        data.findOne.restore();
     });
 
     describe("when credentials are valid", () => {
@@ -51,9 +47,13 @@ describe("AuthController#registerUser", () => {
                 return Promise.resolve(null);
             });
             req.body = {
-                username: "Valid Username",
+                username: "ValidUsername",
                 password: "Pa$$w0rD"
             }
+        });
+
+        afterEach(() => {
+            data.findOne.restore();
         });
 
 
@@ -72,6 +72,11 @@ describe("AuthController#registerUser", () => {
                 return Promise.resolve(null);
             });
         });
+
+        afterEach(() => {
+            data.findOne.restore();
+        });
+
 
         describe("too short username", () => {
             beforeEach(() => {
@@ -98,6 +103,23 @@ describe("AuthController#registerUser", () => {
                 }
             });
 
+            it("should redirect to /auth/register?error=ShortUsername", (done) => {
+                controller.registerUser(req, res)
+                    .then(() => {
+                        expect(res.redirectUrl).to.eql("/auth/register?error=ShortUsername");
+                        done();
+                    });
+            });
+        });
+
+        describe("invalid characters", () => {
+            beforeEach(() => {
+                req.body = {
+                    username: "a".repeat((USERNAME_MIN_LENGTH + USERNAME_MAX_LENGTH / 2)) + "с",
+                    password: "Pa$$w0rD"
+                }
+            });
+
             it("should redirect to /auth/login", (done) => {
                 controller.registerUser(req, res)
                     .then(() => {
@@ -105,6 +127,30 @@ describe("AuthController#registerUser", () => {
                         done();
                     });
             });
+        });
+    });
+
+    describe("when username is taken", () => {
+        beforeEach(() => {
+            sinon.stub(data, "findOne", () => {
+                return Promise.resolve({});
+            });
+            req.body = {
+                username: "ValidUsername",
+                password: "Pa$$w0rD"
+            }
+        });
+
+        afterEach(() => {
+            data.findOne.restore();
+        });
+
+        it("should redirect to /auth/register?error=UserExists", (done) => {
+            controller.registerUser(req, res)
+                .then(() => {
+                    expect(res.redirectUrl).to.equal("/auth/register?error=UserExists");
+                    done();
+                });
         });
     });
 });

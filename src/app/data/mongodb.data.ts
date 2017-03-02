@@ -40,7 +40,6 @@ export class MongoDbData<T> implements BaseData<T> {
         return this.collection.findOne(query)
             .then(model => {
                 if (!model) {
-                    console.log(model);
                     return model;
                 }
 

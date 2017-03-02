@@ -17,8 +17,20 @@ export class StringValidator implements BaseValidator {
     }
 
     public isValid(value: string | number): boolean {
-        return (typeof value === "string") &&
-            value.length >= this.minLength &&
-            value.length <= this.maxLength;
+        const isString = (typeof value === "string");
+        if (!isString) {
+            return false;
+        }
+        const str: string[] = (value + "").split("");
+
+        const isLengthValid = str.length >= this.minLength &&
+            str.length <= this.maxLength;
+
+        if (!isLengthValid) {
+            return false;
+        }
+
+        const doesContainValidChars = str.every(ch => this.chars.indexOf(ch) >= 0);
+        return doesContainValidChars;
     }
 }

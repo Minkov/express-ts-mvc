@@ -13,7 +13,7 @@ import * as path from "path";
 import * as bodyParser from "body-parser";
 
 import { connectionString, port, secret, redisConnectionString } from "./app/config";
-import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH } from "./app/config";
+import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_VALID_CHARS } from "./app/config";
 
 import { Application } from "./app/base/application";
 import { AuthorsRoute } from "./app/routes/authors.route";
@@ -52,13 +52,11 @@ let encryptor = new Encryptor();
 
 let validators = {
     validators: {},
-    getStringValidator(min, max) {
-        const key = `${min}---${max}`;
+    getStringValidator(min, max, chars) {
+        const key = `${min}---${max}---${chars.join()}`;
         if (!this.validators[key]) {
-            this.validators[key] = new StringValidator(min, max);
+            this.validators[key] = new StringValidator(min, max, chars);
         }
-        console.log("-".repeat(500));
-        console.log(this.validators[key]);
         return this.validators[key];
     }
 };
@@ -119,7 +117,7 @@ Promise.resolve()
     .then(() => {
         booksController = new BooksController(booksData);
         authorsController = new AuthorsController(authorsData);
-        let validator = validators.getStringValidator(USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH);
+        let validator = validators.getStringValidator(USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_VALID_CHARS);
         authController = new AuthController(usersData, validator);
     })
 

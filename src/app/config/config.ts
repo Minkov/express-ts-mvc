@@ -11,7 +11,21 @@ const secret: string = "purple unicorn";
 
 const USERNAME_MIN_LENGTH = 3;
 const USERNAME_MAX_LENGTH = 30;
-// "//redis-15543.c8.us-east-1-3.ec2.cloud.redislabs.com:15543"
+const smallLetters =
+    Array.from({ length: 'z'.charCodeAt(0) - 'a'.charCodeAt(0) + 1 })
+        .map((_: any, i: number) => String.fromCharCode(i + 'a'.charCodeAt(0)))
+        .join();
+const capitalLetters =
+    Array.from({ length: 'Z'.charCodeAt(0) - 'A'.charCodeAt(0) + 1 })
+        .map((_: any, i: number) => String.fromCharCode(i + 'A'.charCodeAt(0)))
+        .join();
+
+const digits = Array.from({ length: 10 })
+    .map((_: any, n: number) => n)
+    .join();
+
+const specialChars = "._";
+const USERNAME_VALID_CHARS = smallLetters + capitalLetters + digits + specialChars;
 
 export {
     connectionString,
@@ -20,5 +34,6 @@ export {
     secret,
 
     USERNAME_MIN_LENGTH,
-    USERNAME_MAX_LENGTH
+    USERNAME_MAX_LENGTH,
+    USERNAME_VALID_CHARS
 };
